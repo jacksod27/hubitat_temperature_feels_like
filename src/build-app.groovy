@@ -65,7 +65,6 @@ println """
 
 Next: git add apps/ drivers/ && git commit -m "Build $TIMESTAMP"
 """
-}
 
 def error(String msg) {
     println "❌ BUILD FAILED: $msg"
