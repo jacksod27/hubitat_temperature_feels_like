@@ -1,0 +1,16 @@
+{
+  "name": "WeatherSense (HA Port)",
+  "namespace": "weathersense",
+  "items": [
+    {
+      "label": "WeatherSense App",
+      "category": "Convenience",
+      "location": "https://raw.githubusercontent.com/YOURUSER/ha-weathersense-hubitat/main/apps/WeatherSense-App.groovy"
+    },
+    {
+      "label": "WeatherSense Virtual Sensor", 
+      "category": "Virtual",
+      "location": "https://raw.githubusercontent.com/YOURUSER/ha-weathersense-hubitat/main/drivers/WeatherSense-Virtual.groovy"
+    }
+  ]
+}
