@@ -1,0 +1,6 @@
+/* WeatherSense Glassmorphism */
+.tile-contents { padding: 0 !important; height: 100% !important; }
+.ws-card { height: 100vh !important; box-sizing: border-box; }
+.ws-value { transition: all 0.3s ease; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.ws-card:hover .ws-value { transform: scale(1.05); }
+@media (max-width: 600px) { .ws-value { font-size: 28px !important; } }
