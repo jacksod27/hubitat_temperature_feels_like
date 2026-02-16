@@ -23,7 +23,9 @@ jobs:
       run: |
         curl -s "https://get.sdkman.io" | bash
         source "$HOME/.sdkman/bin/sdkman-init.sh"
-        sdk install groovy 2.4.21
+        sdk install groovy 2.4.21 <<EOF
+        Y
+        EOF
         groovy -version
 
     - name: Build Apps
