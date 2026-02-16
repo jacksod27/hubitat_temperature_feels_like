@@ -1,4 +1,5 @@
 name: Build Hubitat Apps
+
 on:
   push:
     branches: [ main ]
@@ -8,10 +9,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Install Java (required for Groovy)
       uses: actions/setup-java@v4
       with:
@@ -23,19 +24,16 @@ jobs:
         curl -s "https://get.sdkman.io" | bash
         source "$HOME/.sdkman/bin/sdkman-init.sh"
         sdk install groovy 2.4.21
+        groovy -version
 
     - name: Build Apps
       run: |
-        # Make executable
+        source "$HOME/.sdkman/bin/sdkman-init.sh"
         chmod +x src/build-app.groovy
-        
-        # Run build (concat src/ → apps/)
         groovy src/build-app.groovy
-        
-        # Verify outputs
         ls -la apps/
         ls -la drivers/
-    
+
     - name: Commit Deployables
       if: github.ref == 'refs/heads/main'
       run: |
@@ -44,9 +42,3 @@ jobs:
         git add apps/*.groovy drivers/*.groovy
         git diff --staged --quiet || git commit -m "Auto-build: Update deployable files"
         git push
-    
-    - name: Update HPM Repo List
-      if: github.ref == 'refs/heads/main'
-      run: |
-        # Optional: ping HPM repo list
-        echo "New WeatherSense build complete: $GITHUB_SHA"
