@@ -1,38 +1,73 @@
 #!/usr/bin/env groovy
 
-println "=== WeatherSense Build Script Starting ==="
+println "=== WeatherSense Build v1.0 ==="
 
-// Define the source files (in order)
+def TIMESTAMP = new Date().format("yyyy-MM-dd HH:mm:ss")
+
+// Source files (build order matters!)
 def sourceFiles = [
     "WeatherSenseConst.groovy",
-    "WeatherSenseCalculator.groovy",
+    "WeatherSenseCalculator.groovy", 
     "WeatherSenseAppMain.groovy"
 ]
 
-// Build paths
-def srcDir  = new File("src")
-def outDir  = new File("apps")
-def outFile = new File(outDir, "WeatherSense-App.groovy")
+def srcDir = new File("src")
+def appOutDir = new File("apps")
+def driverOutDir = new File("drivers")
 
-// Ensure output directory exists
-if (!outDir.exists()) {
-    println "Creating output directory: ${outDir}"
-    outDir.mkdirs()
+// Ensure directories
+[appOutDir, driverOutDir].each { dir ->
+    if (!dir.exists()) {
+        println "📁 Creating: $dir"
+        dir.mkdirs()
+    }
 }
 
-// Read + combine source files
-println "Combining source files:"
-def combined = sourceFiles.collect { name ->
+// === BUILD APP ===
+def appOutFile = new File(appOutDir, "WeatherSense-App.groovy")
+println "\n📱 Building APP:"
+def appContent = sourceFiles.collect { name ->
     def file = new File(srcDir, name)
-    if (!file.exists()) {
-        throw new RuntimeException("Missing source file: ${file}")
-    }
-    println " - ${file}"
+    if (!file.exists()) error("❌ Missing: ${srcDir}/${name}")
+    println "  📄 $name (${file.length()} bytes)"
     return file.text
-}.join("\n\n")
+}.join("\n\n/* ───────────────────────── */\n\n")
 
-// Write output file
-println "Writing output to: ${outFile}"
-outFile.text = combined
+// Add header
+def header = """/*
+ WeatherSense App v1.0 (AUTO-BUILT)
+ Built: ${TIMESTAMP}
+ Source: https://github.com/YOURUSER/ha-weathersense-hubitat
+ License: CC BY-NC-SA 4.0
+*/\n\n"""
+appOutFile.text = header + appContent
+println "✅ APP: ${appOutFile} (${appContent.length()} chars)"
 
-println "=== Build Complete ==="
+
+// === COPY DRIVER (already single-file) ===
+def driverSrc = new File("drivers-src/WeatherSense-Virtual.groovy")
+def driverOut = new File(driverOutDir, "WeatherSense-Virtual.groovy")
+if (driverSrc.exists()) {
+    driverOut.text = driverSrc.text
+    println "✅ DRIVER: ${driverOut} (${driverOut.length()} chars)"
+} else {
+    println "⚠️  Driver source missing - copy manually"
+}
+
+// === VALIDATION ===
+def appLines = appOutFile.readLines().size()
+println """
+=== BUILD SUMMARY ===
+📱 App:          ${appOutFile} (${appLines} lines)
+🚗 Driver:       ${driverOut}
+⏰ Built:        ${TIMESTAMP}
+🚀 Ready for HPM!
+
+Next: git add apps/ drivers/ && git commit -m "Build $TIMESTAMP"
+"""
+}
+
+def error(String msg) {
+    println "❌ BUILD FAILED: $msg"
+    System.exit(1)
+}
