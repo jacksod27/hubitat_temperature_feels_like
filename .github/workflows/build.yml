@@ -12,11 +12,18 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Setup Groovy
-      uses: roryprimrose/setup-groovy@v1
+    - name: Install Java (required for Groovy)
+      uses: actions/setup-java@v4
       with:
-        groovy-version: '2.4.21'  # Hubitat version
-    
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Install Groovy via SDKMAN
+      run: |
+        curl -s "https://get.sdkman.io" | bash
+        source "$HOME/.sdkman/bin/sdkman-init.sh"
+        sdk install groovy 2.4.21
+
     - name: Build Apps
       run: |
         # Make executable
