@@ -18,6 +18,7 @@ definition(
     attribute "inputWindSpeed", "number"
     attribute "inputPressure", "number"
     attribute "windDirCorrection", "number"
+    attribute "dashboardCard", "string"  // ← NEW
     command "refresh"
 }
 
