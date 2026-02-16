@@ -1,4 +1,11 @@
 /*
+ WeatherSense App v1.0 (AUTO-BUILT)
+ Built: 2026-02-16 11:31:47
+ Source: https://github.com/YOURUSER/ha-weathersense-hubitat
+ License: CC BY-NC-SA 4.0
+*/
+
+/*
  Constants for the WeatherSense integration (Hubitat / Groovy version).
 
  Original: ha-weathersense (Home Assistant)
@@ -106,6 +113,8 @@ class WeatherSenseConst {
     static final String ATTR_WIND_DIRECTION_CORRECTION  = "wind_direction_correction_applied"
 }
 
+
+/* ───────────────────────── */
 
 /*
  Weather calculation functions for Hubitat WeatherSense (Groovy version).
@@ -404,6 +413,8 @@ class WeatherSenseCalculator {
     }
 }
 
+
+/* ───────────────────────── */
 
 /*
  Hubitat WeatherSense App (converted from HA config flow).
