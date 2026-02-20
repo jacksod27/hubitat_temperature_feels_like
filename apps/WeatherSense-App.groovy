@@ -1,6 +1,6 @@
 /*
  WeatherSense App v1.0 (AUTO-BUILT)
- Built: 2026-02-16 11:31:47
+ Built: 2026-02-20 07:14:28
  Source: https://github.com/YOURUSER/ha-weathersense-hubitat
  License: CC BY-NC-SA 4.0
 */
@@ -538,7 +538,19 @@ def calculateAndUpdate() {
         return
     }
     
-    def result = WeatherSenseCalculator.calculateFeelsLike(**inputs)
+    def result = WeatherSenseCalculator.calculateFeelsLike(
+       inputs.temperature,
+       inputs.humidity,
+       inputs.windSpeed,
+       inputs.pressure,
+       inputs.isOutdoor,
+       inputs.timeOfDay,
+       0G, // cloudiness (you never set this)
+       inputs.windDirection,
+       inputs.latitude,
+       inputs.enableWindDirectionCorrection
+    )
+
     
     // Smoothing
     BigDecimal displayValue = convertUnit(result.feelsLike)
