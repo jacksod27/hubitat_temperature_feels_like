@@ -120,7 +120,19 @@ def calculateAndUpdate() {
         return
     }
     
-    def result = WeatherSenseCalculator.calculateFeelsLike(**inputs)
+    def result = WeatherSenseCalculator.calculateFeelsLike(
+       inputs.temperature,
+       inputs.humidity,
+       inputs.windSpeed,
+       inputs.pressure,
+       inputs.isOutdoor,
+       inputs.timeOfDay,
+       0G, // cloudiness (you never set this)
+       inputs.windDirection,
+       inputs.latitude,
+       inputs.enableWindDirectionCorrection
+    )
+
     
     // Smoothing
     BigDecimal displayValue = convertUnit(result.feelsLike)
