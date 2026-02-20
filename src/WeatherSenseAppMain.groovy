@@ -98,64 +98,75 @@ def initialize() {
 // ========== EVENT HANDLER ==========
 def sensorHandler(evt) {
     log.debug "${evt.device.displayName} ${evt.name} → ${evt.value}"
-    runIn(1, calculateAndUpdate)  // Debounce
+    runIn(1, "calculateAndUpdate")  // Debounce
 }
 
 // ========== CORE LOGIC ==========
 def calculateAndUpdate() {
     def inputs = [
-        temperature: safeValue(temperatureSensor, "temperature"),
-        humidity: safeValue(humiditySensor, "humidity"),
-        windSpeed: safeValue(windSpeedSensor, "illuminance"),
-        pressure: safeValue(pressureSensor, "illuminance"),
-        windDirection: safeValue(windDirectionSensor, "illuminance"),
-        isOutdoor: isOutdoor ?: true,
-        timeOfDay: new Date(),
-        latitude: location.latitude,
+        temperature:  safeValue(temperatureSensor, "temperature"),
+        humidity:     safeValue(humiditySensor, "humidity"),
+        windSpeed:    safeValue(windSpeedSensor, "illuminance"),
+        pressure:     safeValue(pressureSensor, "illuminance"),
+        windDirection:safeValue(windDirectionSensor, "illuminance"),
+        isOutdoor:    isOutdoor ?: true,
+        timeOfDay:    new Date(),
+        latitude:     location.latitude,
         enableWindDirectionCorrection: enableWindDirCorrection ?: false
     ]
     
-    if (!inputs.temperature || !inputs.humidity) {
+    if (inputs.temperature == null || inputs.humidity == null) {
         log.warn "Missing required sensors"
         return
     }
     
     def result = WeatherSenseCalculator.calculateFeelsLike(
-       inputs.temperature,
-       inputs.humidity,
-       inputs.windSpeed,
-       inputs.pressure,
-       inputs.isOutdoor,
-       inputs.timeOfDay,
-       0G, // cloudiness (you never set this)
-       inputs.windDirection,
-       inputs.latitude,
-       inputs.enableWindDirectionCorrection
+        inputs.temperature,
+        inputs.humidity,
+        inputs.windSpeed,
+        inputs.pressure,
+        inputs.isOutdoor,
+        inputs.timeOfDay,
+        0G, // cloudiness
+        inputs.windDirection,
+        inputs.latitude,
+        inputs.enableWindDirectionCorrection
     )
 
-    
-    // Smoothing
+    if (result?.feelsLike == null) {
+        log.warn "Feels-like calculation returned null"
+        return
+    }
+
+ // Smoothing
     BigDecimal displayValue = convertUnit(result.feelsLike)
-    if (enableSmoothing && state.smoothedValue) {
+    if (enableSmoothing && state.smoothedValue != null) {
         BigDecimal alpha = smoothingFactor ?: 0.3G
-        displayValue = alpha * displayValue + (1-alpha) * state.smoothedValue
+        displayValue = alpha * displayValue + (1 - alpha) * state.smoothedValue
     }
     state.smoothedValue = displayValue
-    
-    // Update child
-    updateChildDevice(result, displayValue)
-    
+
     state.lastResult = result
     state.lastInputs = inputs
+
+  // Update child
+    updateChildDevice(result, displayValue)
 }
 
 def safeValue(device, attr) {
-    return device?.currentValue(attr)?.toBigDecimal()
+    def v = device?.currentValue(attr)
+    if (v == null) return null
+    try {
+        return new BigDecimal(v.toString())
+    } catch (e) {
+        log.warn "Invalid numeric value for ${attr}: ${v}"
+        return null
+    }
 }
 
 BigDecimal convertUnit(BigDecimal celsius) {
     return displayUnit == "F" ? (celsius * 9/5G + 32G) : celsius
-}
+}   
 
 def updateChildDevice(result, displayValue) {
     def child = getChildDevice(state.childDeviceId)
