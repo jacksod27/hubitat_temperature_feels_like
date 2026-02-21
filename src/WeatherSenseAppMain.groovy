@@ -98,7 +98,7 @@ def initialize() {
 // ========== EVENT HANDLER ==========
 def sensorHandler(evt) {
     log.debug "${evt.device.displayName} ${evt.name} → ${evt.value}"
-    runIn(1, "calculateAndUpdate")  // Debounce
+    runIn(1, calculateAndUpdate)  // Debounce
 }
 
 // ========== CORE LOGIC ==========
@@ -168,9 +168,13 @@ def safeValue(device, attr) {
     }
 }
 
-BigDecimal convertUnit(BigDecimal celsius) {
-    return displayUnit == "F" ? (celsius * 9/5G + 32G) : celsius
-}   
+def convertUnit(BigDecimal celsius) {
+    if (displayUnit == "F") {
+        return (celsius * 9G / 5G) + 32G
+    } else {
+        return celsius
+    }
+} 
 
 def updateChildDevice(result, displayValue) {
     def child = getChildDevice(state.childDeviceId)
