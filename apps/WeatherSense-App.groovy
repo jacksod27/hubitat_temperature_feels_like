@@ -1,6 +1,6 @@
 /*
  WeatherSense App v1.0 (AUTO-BUILT)
- Built: 2026-02-21 04:55:13
+ Built: 2026-02-21 05:17:08
  Source: https://github.com/YOURUSER/ha-weathersense-hubitat
  License: CC BY-NC-SA 4.0
 */
@@ -521,7 +521,7 @@ def initialize() {
 // ========== EVENT HANDLER ==========
 def sensorHandler(evt) {
     log.debug "${evt.device.displayName} ${evt.name} → ${evt.value}"
-    runIn(1, "calculateAndUpdate")  // Debounce
+    runIn(1, calculateAndUpdate)  // Debounce
 }
 
 // ========== CORE LOGIC ==========
@@ -591,9 +591,13 @@ def safeValue(device, attr) {
     }
 }
 
-BigDecimal convertUnit(BigDecimal celsius) {
-    return displayUnit == "F" ? (celsius * 9/5G + 32G) : celsius
-}   
+def convertUnit(BigDecimal celsius) {
+    if (displayUnit == "F") {
+        return (celsius * 9G / 5G) + 32G
+    } else {
+        return celsius
+    }
+} 
 
 def updateChildDevice(result, displayValue) {
     def child = getChildDevice(state.childDeviceId)
