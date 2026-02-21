@@ -224,7 +224,7 @@ class WeatherSenseCalculator {
             feelsLike: feelsLike,
             method: method,
             comfortLevel: comfortLevel,
-            windDirectionCorrection: windDirectionCorrection
+            windDirectionCorrection: windDirectionCorrection,
             outOfRange: outOfRange
         ]
     }
