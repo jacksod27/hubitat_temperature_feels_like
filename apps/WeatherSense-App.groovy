@@ -1,6 +1,6 @@
 /*
  WeatherSense App v1.0 (AUTO-BUILT)
- Built: 2026-02-21 05:27:46
+ Built: 2026-02-21 06:00:27
  Source: https://github.com/YOURUSER/ha-weathersense-hubitat
  License: CC BY-NC-SA 4.0
 */
@@ -13,8 +13,6 @@
  Author:   SMKRV
  Source:   https://github.com/smkrv/ha-weathersense
 */
-
-class WeatherSenseConst {
 
     // Domain / name
     static final String DOMAIN = "weathersense"
