@@ -22,9 +22,9 @@ metadata {
         // Input values
         attribute "inputTemperature", "number"
         attribute "inputHumidity", "number" 
-        attribute "inputWindSpeed", "number"
-        attribute "inputPressure", "number"
-        attribute "windDirCorrection", "number"
+        // attribute "inputWindSpeed", "number"
+        // attribute "inputPressure", "number"
+        attribute "windDirectionCorrection", "number"
         
         // DASHBOARD CARD ✨
         attribute "dashboardCard", "string"
@@ -66,17 +66,17 @@ def updateDashboardData(Map data) {
     
     // Comfort info
     sendEvent(name: "comfortLevel", value: data.comfortLevel)
-    sendEvent(name: "comfortDescription", value: data.comfortDesc)
-    sendEvent(name: "comfortExplanation", value: data.comfortExpl)
+    sendEvent(name: "comfortDescription", value: data.comfortDescription)
+    sendEvent(name: "comfortExplanation", value: data.comfortExplanation)
     sendEvent(name: "calculationMethod", value: data.method)
     sendEvent(name: "isComfortable", value: data.isComfortable)
-    
+
     // Input values
     sendEvent(name: "inputTemperature", value: data.inputTemp)
     sendEvent(name: "inputHumidity", value: data.inputHumidity)
     sendEvent(name: "inputWindSpeed", value: data.inputWindSpeed)
     sendEvent(name: "inputPressure", value: data.inputPressure)
-    sendEvent(name: "windDirCorrection", value: data.windDirCorrection)
+    sendEvent(name: "windDirCorrection", value: data.windDirectionCorrection)
     
     // Dashboard summary
     sendEvent(name: "dashboardStatus", value: "${data.feelsLike.round(1)}°C (${data.comfortLevel})")
@@ -112,7 +112,7 @@ private String buildDashboardCard(Map data) {
       <span>RH:</span> <span>${data.inputHumidity?.round(1)}%</span>
     </div>
   </div>
-  <div class="ws-status">${data.comfortDesc}</div>
+  <div class="ws-status">${data.comfortDescription}</div>
 </div>
 
 <style>
