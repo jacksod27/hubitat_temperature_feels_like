@@ -1,6 +1,6 @@
 /*
  WeatherSense App v1.0 (AUTO-BUILT)
- Built: 2026-02-21 04:24:02
+ Built: 2026-02-21 04:33:09
  Source: https://github.com/YOURUSER/ha-weathersense-hubitat
  License: CC BY-NC-SA 4.0
 */
@@ -336,11 +336,15 @@ class WeatherSenseCalculator {
             comfortLevel = determineIndoorComfort(feelsLike, humidity)
         }
 
+      // flag to identify it feelslike value is too far from actual value
+        boolean outOfRange = Math.abs(feelsLike - temperature) > 25G
+     
         return [
             feelsLike: feelsLike,
             method: method,
             comfortLevel: comfortLevel,
             windDirectionCorrection: windDirectionCorrection
+            outOfRange: outOfRange
         ]
     }
 
