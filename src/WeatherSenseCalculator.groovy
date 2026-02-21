@@ -9,9 +9,9 @@
 
 import groovy.transform.Field
 
-@Field static final BigDecimal STANDARD_PRESSURE = 101.3G  // kPa
-
 class WeatherSenseCalculator {
+
+ static final BigDecimal STANDARD_PRESSURE = 101.3G  // kPa
 
     static BigDecimal calculateHeatIndex(BigDecimal temperature, BigDecimal humidity) {
         // Convert Celsius to Fahrenheit for calculation
@@ -167,7 +167,7 @@ class WeatherSenseCalculator {
         boolean enableWindDirectionCorrection = false
     ) {
         String method = ""
-        BigDecimal windDirCorrection = 0G
+        BigDecimal windDirectionCorrection = 0G
 
         BigDecimal feelsLike
         String comfortLevel
