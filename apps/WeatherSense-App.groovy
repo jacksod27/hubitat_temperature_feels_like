@@ -1,6 +1,6 @@
 /*
  WeatherSense App v1.0 (AUTO-BUILT)
- Built: 2026-02-20 07:22:19
+ Built: 2026-02-21 03:45:19
  Source: https://github.com/YOURUSER/ha-weathersense-hubitat
  License: CC BY-NC-SA 4.0
 */
@@ -211,7 +211,7 @@ class WeatherSenseCalculator {
         // Daytime solar radiation effect (sunrise to sunset approximately)
         if (hour >= 6 && hour <= 18) {
             BigDecimal hoursFromSunrise = hour - 6
-            BigDecimal solarIntensity = Math.sin(Math.toRadians(Math.PI * hoursFromSunrise / 12))
+            BigDecimal solarIntensity = Math.sin((Math.PI * hoursFromSunrise) / 12)
 
             BigDecimal maxSolarCorrection
             if (feelsLike >= 25) {
@@ -236,7 +236,7 @@ class WeatherSenseCalculator {
     }
 
     static BigDecimal applyPressureCorrection(BigDecimal feelsLike, BigDecimal pressure = null) {
-        if (!pressure || pressure <= 0) {
+        if (pressure == null || pressure <= 0) {
             return feelsLike
         }
 
@@ -249,12 +249,12 @@ class WeatherSenseCalculator {
     }
 
     static Map applyWindDirectionCorrection(BigDecimal feelsLike, BigDecimal windDirection, BigDecimal latitude = null, BigDecimal maxCorrection = 1.0G) {
-        if (!windDirection) {
+        if (windDirection == null) {
             return [feelsLike: feelsLike, correction: 0G]
         }
 
         // Normalize wind direction to 0-360 range
-        windDirection = windDirection % 360
+        windDirection = ((windDirection % 360) + 360) % 360
 
         // Calculate north-south component using cosine
         BigDecimal northFactor = Math.cos(Math.toRadians(windDirection))
