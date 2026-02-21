@@ -8,7 +8,7 @@
 */
 
 // ========== INLINE CONSTANTS (WeatherSenseConst replacement) ==========
-static final Map WEATHERSENSE_CONST = [
+final Map WEATHERSENSE_CONST = [
     // Comfort levels
     COMFORT_EXTREME_COLD: "extreme_cold",
     COMFORT_VERY_COLD: "very_cold",
