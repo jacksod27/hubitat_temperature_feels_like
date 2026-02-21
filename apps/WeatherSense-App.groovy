@@ -1,6 +1,6 @@
 /*
  WeatherSense App v1.0 (AUTO-BUILT)
- Built: 2026-02-21 04:37:31
+ Built: 2026-02-21 04:52:15
  Source: https://github.com/YOURUSER/ha-weathersense-hubitat
  License: CC BY-NC-SA 4.0
 */
@@ -472,7 +472,7 @@ def sensorPage() {
             input "windDirectionSensor", "capability.illuminanceMeasurement", title: "Wind Direction (°)"
         }
         section("Advanced") {
-            input "enableWindDirCorrection", "bool", title: "Wind Direction Correction", defaultValue: false
+            input "enableWindDirectionCorrection", "bool", title: "Wind Direction Correction", defaultValue: false
             input "enableSmoothing", "bool", title: "Smoothing", defaultValue: false
             input "smoothingFactor", "decimal", title: "Smoothing Factor", range: "0.05..0.95", defaultValue: 0.3
         }
@@ -535,7 +535,7 @@ def calculateAndUpdate() {
         isOutdoor:    isOutdoor ?: true,
         timeOfDay:    new Date(),
         latitude:     location.latitude,
-        enableWindDirectionCorrection: enableWindDirCorrection ?: false
+        enableWindDirectionCorrection: enableWindDirectionCorrection ?: false
     ]
     
     if (inputs.temperature == null || inputs.humidity == null) {
