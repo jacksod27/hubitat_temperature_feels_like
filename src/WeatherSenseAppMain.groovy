@@ -187,9 +187,13 @@ def updateChildDevice(result, displayValue) {
     child.sendEvent(name: "inputHumidity", value: state.lastInputs.humidity?.round(1))
 }
 
-boolean isComfortable(String level) 
+boolean isComfortable(String level) {
     def consts = WeatherSenseConst
-    return level in [consts.COMFORT_COMFORTABLE, consts.COMFORT_SLIGHTLY_WARM, consts.COMFORT_SLIGHTLY_COOL]
+    return level in [
+     consts.COMFORT_COMFORTABLE, 
+     consts.COMFORT_SLIGHTLY_WARM, 
+     consts.COMFORT_SLIGHTLY_COOL
+                    ]
 }
 
 // ========== DASHBOARD ==========
