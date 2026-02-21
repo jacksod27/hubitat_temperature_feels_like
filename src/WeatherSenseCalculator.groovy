@@ -196,7 +196,7 @@ class WeatherSenseCalculator {
             if (enableWindDirectionCorrection && windDirection) {
                 def result = applyWindDirectionCorrection(feelsLike, windDirection, latitude)
                 feelsLike = result.feelsLike
-                windDirCorrection = result.correction
+                windDirectionCorrection = result.correction
             }
 
             // Sanity check for unreasonable values
@@ -221,7 +221,7 @@ class WeatherSenseCalculator {
             feelsLike: feelsLike,
             method: method,
             comfortLevel: comfortLevel,
-            windDirCorrection: windDirCorrection
+            windDirectionCorrection: windDirectionCorrection
         ]
     }
 
