@@ -1,6 +1,6 @@
 /*
  WeatherSense App v1.0 (AUTO-BUILT)
- Built: 2026-02-21 04:52:15
+ Built: 2026-02-21 04:55:13
  Source: https://github.com/YOURUSER/ha-weathersense-hubitat
  License: CC BY-NC-SA 4.0
 */
@@ -343,7 +343,7 @@ class WeatherSenseCalculator {
             feelsLike: feelsLike,
             method: method,
             comfortLevel: comfortLevel,
-            windDirectionCorrection: windDirectionCorrection
+            windDirectionCorrection: windDirectionCorrection,
             outOfRange: outOfRange
         ]
     }
