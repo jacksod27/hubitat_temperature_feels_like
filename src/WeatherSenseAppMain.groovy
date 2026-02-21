@@ -193,7 +193,6 @@ boolean isComfortable(String level)
 }
 
 // ========== DASHBOARD ==========
-attribute "dashboardStatus", "string"
 def getDashboardStatus() {
     return state.lastResult ? "${state.smoothedValue?.round(1)}°C (${state.lastResult.comfortLevel})" : "Waiting..."
 }
