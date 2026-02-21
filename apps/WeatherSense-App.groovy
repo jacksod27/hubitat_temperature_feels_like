@@ -1,6 +1,6 @@
 /*
  WeatherSense App v1.0 (AUTO-BUILT)
- Built: 2026-02-21 06:04:48
+ Built: 2026-02-21 06:05:18
  Source: https://github.com/YOURUSER/ha-weathersense-hubitat
  License: CC BY-NC-SA 4.0
 */
@@ -122,9 +122,9 @@ final String ATTR_WIND_DIRECTION_CORRECTION = "windDirectionCorrection"
  Source:   [https://github.com/smkrv/ha-weathersense](https://github.com/smkrv/ha-weathersense)
 */
 
-static final BigDecimal STANDARD_PRESSURE = 101.3G  // kPa
+final BigDecimal STANDARD_PRESSURE = 101.3G  // kPa
 
-static final Map COMFORT_LEVELS = [
+final Map COMFORT_LEVELS = [
     "extreme_cold": "extreme_cold",
     "very_cold": "very_cold", 
     "cold": "cold",
