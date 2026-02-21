@@ -1,6 +1,6 @@
 /*
  WeatherSense App v1.0 (AUTO-BUILT)
- Built: 2026-02-21 03:53:11
+ Built: 2026-02-21 03:57:14
  Source: https://github.com/YOURUSER/ha-weathersense-hubitat
  License: CC BY-NC-SA 4.0
 */
@@ -591,20 +591,22 @@ def updateChildDevice(result, displayValue) {
     def child = getChildDevice(state.childDeviceId)
     if (!child) return
     
-    def consts = WeatherSenseConst
     
-    child.sendEvent(name: "temperature", value: displayValue.round(1))
-    child.sendEvent(name: "comfortLevel", value: result.comfortLevel)
-    child.sendEvent(name: "comfortDescription", value: consts.COMFORT_DESCRIPTIONS[result.comfortLevel])
-    child.sendEvent(name: "calculationMethod", value: result.method)
-    child.sendEvent(name: "isComfortable", value: isComfortable(result.comfortLevel))
-    
+    def C = WeatherSenseConst
+
+    child.sendEvent(name: C.ATTR_COMFORT_LEVEL, value: result.comfortLevel)
+    child.sendEvent(name: C.ATTR_COMFORT_DESCRIPTION, value: C.COMFORT_DESCRIPTIONS[result.comfortLevel])
+    child.sendEvent(name: C.ATTR_CALCULATION_METHOD, value: result.method)
+    child.sendEvent(name: C.ATTR_IS_COMFORTABLE, value: isComfortable(result.comfortLevel))
+    child.sendEvent(name: C.ATTR_WIND_DIRECTION_CORRECTION, value: result.windDirectionCorrection)
+
+
     // Input values as attributes
     child.sendEvent(name: "inputTemp", value: state.lastInputs.temperature?.round(1))
     child.sendEvent(name: "inputHumidity", value: state.lastInputs.humidity?.round(1))
 }
 
-boolean isComfortable(String level) {
+boolean isComfortable(String level) 
     def consts = WeatherSenseConst
     return level in [consts.COMFORT_COMFORTABLE, consts.COMFORT_SLIGHTLY_WARM, consts.COMFORT_SLIGHTLY_COOL]
 }
