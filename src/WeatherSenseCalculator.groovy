@@ -217,11 +217,15 @@ class WeatherSenseCalculator {
             comfortLevel = determineIndoorComfort(feelsLike, humidity)
         }
 
+      // flag to identify it feelslike value is too far from actual value
+        boolean outOfRange = Math.abs(feelsLike - temperature) > 25G
+     
         return [
             feelsLike: feelsLike,
             method: method,
             comfortLevel: comfortLevel,
             windDirectionCorrection: windDirectionCorrection
+            outOfRange: outOfRange
         ]
     }
 
