@@ -7,15 +7,51 @@
  Source:   https://github.com/smkrv/ha-weathersense
 */
 
+// ========== INLINE CONSTANTS (WeatherSenseConst replacement) ==========
+static final Map WEATHERSENSE_CONST = [
+    // Comfort levels
+    COMFORT_EXTREME_COLD: "extreme_cold",
+    COMFORT_VERY_COLD: "very_cold",
+    COMFORT_COLD: "cold",
+    COMFORT_COOL: "cool",
+    COMFORT_SLIGHTLY_COOL: "slightly_cool",
+    COMFORT_COMFORTABLE: "comfortable",
+    COMFORT_SLIGHTLY_WARM: "slightly_warm",
+    COMFORT_WARM: "warm",
+    COMFORT_HOT: "hot",
+    COMFORT_VERY_HOT: "very_hot",
+    COMFORT_EXTREME_HOT: "extreme_hot",
+
+    // Comfort descriptions
+    COMFORT_DESCRIPTIONS: [
+        "extreme_cold": "Extreme Cold Stress",
+        "very_cold": "Very Strong Cold Stress",
+        "cold": "Strong Cold Stress",
+        "cool": "Moderate Cold Stress",
+        "slightly_cool": "Slight Cold Stress",
+        "comfortable": "No Thermal Stress (Comfort)",
+        "slightly_warm": "Slight Heat Stress",
+        "warm": "Moderate Heat Stress",
+        "hot": "Strong Heat Stress",
+        "very_hot": "Very Strong Heat Stress",
+        "extreme_hot": "Extreme Heat Stress"
+    ],
+
+    // Attribute names
+    ATTR_COMFORT_LEVEL: "comfortLevel",
+    ATTR_COMFORT_DESCRIPTION: "comfortDescription",
+    ATTR_CALCULATION_METHOD: "calculationMethod",
+    ATTR_IS_COMFORTABLE: "isComfortable",
+    ATTR_WIND_DIRECTION_CORRECTION: "windDirectionCorrection"
+]
+
 // ========== DEFINITION ==========
 definition(
     name: "WeatherSense", 
     namespace: "weathersense",
     description: "HA WeatherSense port for Hubitat",
     category: "Convenience"
-) {
-    // Capabilities handled automatically
-}
+)
 
 // ========== PREFERENCES ==========
 preferences {
@@ -62,7 +98,7 @@ def installed() {
     initialize()
 }
 
-def updated(settings) {
+def updated() {  // Fixed: no 'settings' param
     unsubscribe()
     initialize()
 }
@@ -98,20 +134,20 @@ def initialize() {
 // ========== EVENT HANDLER ==========
 def sensorHandler(evt) {
     log.debug "${evt.device.displayName} ${evt.name} → ${evt.value}"
-    runIn(1, calculateAndUpdate)  // Debounce
+    runIn(1, calculateAndUpdate)  // Fixed: method reference
 }
 
 // ========== CORE LOGIC ==========
 def calculateAndUpdate() {
     def inputs = [
-        temperature:  safeValue(temperatureSensor, "temperature"),
-        humidity:     safeValue(humiditySensor, "humidity"),
-        windSpeed:    safeValue(windSpeedSensor, "illuminance"),
-        pressure:     safeValue(pressureSensor, "illuminance"),
-        windDirection:safeValue(windDirectionSensor, "illuminance"),
-        isOutdoor:    isOutdoor ?: true,
-        timeOfDay:    new Date(),
-        latitude:     location.latitude,
+        temperature: safeValue(temperatureSensor, "temperature"),
+        humidity: safeValue(humiditySensor, "humidity"),
+        windSpeed: safeValue(windSpeedSensor, "illuminance"),
+        pressure: safeValue(pressureSensor, "illuminance"),
+        windDirection: safeValue(windDirectionSensor, "illuminance"),
+        isOutdoor: isOutdoor ?: true,
+        timeOfDay: new Date(),
+        latitude: location.latitude,
         enableWindDirectionCorrection: enableWindDirectionCorrection ?: false
     ]
     
@@ -120,7 +156,8 @@ def calculateAndUpdate() {
         return
     }
     
-    def result = WeatherSenseCalculator.calculateFeelsLike(
+    // FIXED: Call inline method directly (no WeatherSenseCalculator class)
+    def result = calculateFeelsLike(
         inputs.temperature,
         inputs.humidity,
         inputs.windSpeed,
@@ -142,18 +179,17 @@ def calculateAndUpdate() {
         log.warn "Feels-like value (${result.feelsLike}°C) is unusually far from actual temperature (${inputs.temperature}°C)"
     }
  
- // Smoothing
+    // Smoothing - FIXED: null-safe alpha
     BigDecimal displayValue = convertUnit(result.feelsLike)
     if (enableSmoothing && state.smoothedValue != null) {
-        BigDecimal alpha = smoothingFactor ?: 0.3G
-        displayValue = alpha * displayValue + (1 - alpha) * state.smoothedValue
+        BigDecimal alpha = smoothingFactor ? new BigDecimal(smoothingFactor.toString()) : 0.3G
+        displayValue = alpha * displayValue + (1G - alpha) * state.smoothedValue
     }
     state.smoothedValue = displayValue
 
     state.lastResult = result
     state.lastInputs = inputs
 
-  // Update child
     updateChildDevice(result, displayValue)
 }
 
@@ -180,8 +216,7 @@ def updateChildDevice(result, displayValue) {
     def child = getChildDevice(state.childDeviceId)
     if (!child) return
     
-    
-    def C = WeatherSenseConst
+    def C = WEATHERSENSE_CONST  // FIXED: inline consts
 
     child.sendEvent(name: C.ATTR_COMFORT_LEVEL, value: result.comfortLevel)
     child.sendEvent(name: C.ATTR_COMFORT_DESCRIPTION, value: C.COMFORT_DESCRIPTIONS[result.comfortLevel])
@@ -189,22 +224,22 @@ def updateChildDevice(result, displayValue) {
     child.sendEvent(name: C.ATTR_IS_COMFORTABLE, value: isComfortable(result.comfortLevel))
     child.sendEvent(name: C.ATTR_WIND_DIRECTION_CORRECTION, value: result.windDirectionCorrection)
 
-
     // Input values as attributes
     child.sendEvent(name: "inputTemp", value: state.lastInputs.temperature?.round(1))
     child.sendEvent(name: "inputHumidity", value: state.lastInputs.humidity?.round(1))
 }
 
-boolean isComfortable(String level) {
-    def consts = WeatherSenseConst
+def isComfortable(String level) {  // FIXED: inline check
     return level in [
-     consts.COMFORT_COMFORTABLE, 
-     consts.COMFORT_SLIGHTLY_WARM, 
-     consts.COMFORT_SLIGHTLY_COOL
-                    ]
+        "comfortable", 
+        "slightly_warm", 
+        "slightly_cool"
+    ]
 }
 
 // ========== DASHBOARD ==========
 def getDashboardStatus() {
-    return state.lastResult ? "${state.smoothedValue?.round(1)}°C (${state.lastResult.comfortLevel})" : "Waiting..."
+    if (!state.lastResult) return "Waiting..."
+    def unit = displayUnit == "F" ? "°F" : "°C"
+    return "${state.smoothedValue?.round(1)}${unit} (${state.lastResult.comfortLevel})"
 }
