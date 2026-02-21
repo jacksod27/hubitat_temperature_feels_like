@@ -1,6 +1,6 @@
 /*
  WeatherSense App v1.0 (AUTO-BUILT)
- Built: 2026-02-21 03:48:30
+ Built: 2026-02-21 03:53:11
  Source: https://github.com/YOURUSER/ha-weathersense-hubitat
  License: CC BY-NC-SA 4.0
 */
@@ -315,7 +315,7 @@ class WeatherSenseCalculator {
             if (enableWindDirectionCorrection && windDirection) {
                 def result = applyWindDirectionCorrection(feelsLike, windDirection, latitude)
                 feelsLike = result.feelsLike
-                windDirCorrection = result.correction
+                windDirectionCorrection = result.correction
             }
 
             // Sanity check for unreasonable values
@@ -340,7 +340,7 @@ class WeatherSenseCalculator {
             feelsLike: feelsLike,
             method: method,
             comfortLevel: comfortLevel,
-            windDirCorrection: windDirCorrection
+            windDirectionCorrection: windDirectionCorrection
         ]
     }
 
