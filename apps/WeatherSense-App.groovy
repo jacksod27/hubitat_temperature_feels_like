@@ -1,6 +1,6 @@
 /*
  WeatherSense App v1.0 (AUTO-BUILT)
- Built: 2026-02-21 04:08:09
+ Built: 2026-02-21 04:12:47
  Source: https://github.com/YOURUSER/ha-weathersense-hubitat
  License: CC BY-NC-SA 4.0
 */
@@ -606,9 +606,13 @@ def updateChildDevice(result, displayValue) {
     child.sendEvent(name: "inputHumidity", value: state.lastInputs.humidity?.round(1))
 }
 
-boolean isComfortable(String level) 
+boolean isComfortable(String level) {
     def consts = WeatherSenseConst
-    return level in [consts.COMFORT_COMFORTABLE, consts.COMFORT_SLIGHTLY_WARM, consts.COMFORT_SLIGHTLY_COOL]
+    return level in [
+     consts.COMFORT_COMFORTABLE, 
+     consts.COMFORT_SLIGHTLY_WARM, 
+     consts.COMFORT_SLIGHTLY_COOL
+                    ]
 }
 
 // ========== DASHBOARD ==========
