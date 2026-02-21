@@ -7,9 +7,9 @@
  Source:   [https://github.com/smkrv/ha-weathersense](https://github.com/smkrv/ha-weathersense)
 */
 
-@Field static final BigDecimal STANDARD_PRESSURE = 101.3G  // kPa
+static final BigDecimal STANDARD_PRESSURE = 101.3G  // kPa
 
-@Field static final Map COMFORT_LEVELS = [
+static final Map COMFORT_LEVELS = [
     "extreme_cold": "extreme_cold",
     "very_cold": "very_cold", 
     "cold": "cold",
