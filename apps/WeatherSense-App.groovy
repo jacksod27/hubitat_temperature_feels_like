@@ -1,6 +1,6 @@
 /*
  WeatherSense App v1.0 (AUTO-BUILT)
- Built: 2026-02-21 05:22:35
+ Built: 2026-02-21 05:25:19
  Source: https://github.com/YOURUSER/ha-weathersense-hubitat
  License: CC BY-NC-SA 4.0
 */
@@ -126,9 +126,9 @@ class WeatherSenseConst {
  Source:   [https://github.com/smkrv/ha-weathersense](https://github.com/smkrv/ha-weathersense)
 */
 
-@Field static final BigDecimal STANDARD_PRESSURE = 101.3G  // kPa
+static final BigDecimal STANDARD_PRESSURE = 101.3G  // kPa
 
-@Field static final Map COMFORT_LEVELS = [
+static final Map COMFORT_LEVELS = [
     "extreme_cold": "extreme_cold",
     "very_cold": "very_cold", 
     "cold": "cold",
