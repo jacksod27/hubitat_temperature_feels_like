@@ -1,6 +1,6 @@
 /*
  WeatherSense App v1.0 (AUTO-BUILT)
- Built: 2026-02-21 03:57:14
+ Built: 2026-02-21 04:00:03
  Source: https://github.com/YOURUSER/ha-weathersense-hubitat
  License: CC BY-NC-SA 4.0
 */
@@ -612,7 +612,6 @@ boolean isComfortable(String level)
 }
 
 // ========== DASHBOARD ==========
-attribute "dashboardStatus", "string"
 def getDashboardStatus() {
     return state.lastResult ? "${state.smoothedValue?.round(1)}°C (${state.lastResult.comfortLevel})" : "Waiting..."
 }
