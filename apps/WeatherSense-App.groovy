@@ -1,6 +1,6 @@
 /*
  WeatherSense App v1.0 (AUTO-BUILT)
- Built: 2026-02-21 06:05:18
+ Built: 2026-02-21 06:05:48
  Source: https://github.com/YOURUSER/ha-weathersense-hubitat
  License: CC BY-NC-SA 4.0
 */
@@ -405,7 +405,7 @@ def determineIndoorComfort(BigDecimal temperature, BigDecimal humidity) {
 */
 
 // ========== INLINE CONSTANTS (WeatherSenseConst replacement) ==========
-static final Map WEATHERSENSE_CONST = [
+final Map WEATHERSENSE_CONST = [
     // Comfort levels
     COMFORT_EXTREME_COLD: "extreme_cold",
     COMFORT_VERY_COLD: "very_cold",
