@@ -1,6 +1,6 @@
 /*
  WeatherSense App v1.0 (AUTO-BUILT)
- Built: 2026-02-21 04:33:09
+ Built: 2026-02-21 04:37:31
  Source: https://github.com/YOURUSER/ha-weathersense-hubitat
  License: CC BY-NC-SA 4.0
 */
@@ -561,6 +561,10 @@ def calculateAndUpdate() {
         return
     }
 
+    if (result.outOfRange) {
+        log.warn "Feels-like value (${result.feelsLike}°C) is unusually far from actual temperature (${inputs.temperature}°C)"
+    }
+ 
  // Smoothing
     BigDecimal displayValue = convertUnit(result.feelsLike)
     if (enableSmoothing && state.smoothedValue != null) {
