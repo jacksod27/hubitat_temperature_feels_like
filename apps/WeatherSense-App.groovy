@@ -1,6 +1,6 @@
 /*
  WeatherSense App v1.0 (AUTO-BUILT)
- Built: 2026-02-21 04:20:41
+ Built: 2026-02-21 04:24:02
  Source: https://github.com/YOURUSER/ha-weathersense-hubitat
  License: CC BY-NC-SA 4.0
 */
@@ -319,13 +319,13 @@ class WeatherSenseCalculator {
             }
 
             // Sanity check for unreasonable values
-            if (Math.abs(feelsLike - originalFeelsLike) > 0.1G) {
-                log.debug "Applied corrections: original=${originalFeelsLike}°C, after corrections=${feelsLike}°C"
-            }
+            // if (Math.abs(feelsLike - originalFeelsLike) > 0.1G) {
+            //     log.debug "Applied corrections: original=${originalFeelsLike}°C, after corrections=${feelsLike}°C"
+            //  }
 
-            if (feelsLike > temperature + 25 || feelsLike < temperature - 25) {
-                log.warn "Calculated feels-like temperature (${feelsLike}°C) is far from actual temperature (${temperature}°C)"
-            }
+            // if (feelsLike > temperature + 25 || feelsLike < temperature - 25) {
+            //     log.warn "Calculated feels-like temperature (${feelsLike}°C) is far from actual temperature (${temperature}°C)"
+            // }
 
             // Determine comfort level for outdoor
             comfortLevel = determineOutdoorComfort(feelsLike, method)
@@ -360,10 +360,10 @@ class WeatherSenseCalculator {
         def consts = WeatherSenseConst
 
         // Sanity check - if feels_like is unreasonable, use more conservative estimate
-        if (feelsLike > 60) {
-            log.warn "Calculated feels-like temperature is unreasonably high: ${feelsLike}°C. Capping at 50°C"
-            feelsLike = Math.min(feelsLike, 50G)
-        }
+        // if (feelsLike > 60) {
+        //     log.warn "Calculated feels-like temperature is unreasonably high: ${feelsLike}°C. Capping at 50°C"
+        //     feelsLike = Math.min(feelsLike, 50G)
+        // }
 
         switch (method) {
             case "Heat Index":
