@@ -1,6 +1,6 @@
 /*
  WeatherSense App v1.0 (AUTO-BUILT)
- Built: 2026-02-21 03:45:19
+ Built: 2026-02-21 03:48:30
  Source: https://github.com/YOURUSER/ha-weathersense-hubitat
  License: CC BY-NC-SA 4.0
 */
@@ -97,20 +97,21 @@ class WeatherSenseConst {
         (COMFORT_EXTREME_HOT) :  "mdi:fire-alert"
     ]
 
-    // Sensor attributes
-    static final String ATTR_COMFORT_LEVEL              = "comfort_level"
-    static final String ATTR_COMFORT_DESCRIPTION        = "comfort_description"
-    static final String ATTR_COMFORT_EXPLANATION        = "comfort_explanation"
-    static final String ATTR_CALCULATION_METHOD         = "calculation_method"
-    static final String ATTR_TEMPERATURE                = "temperature"
-    static final String ATTR_HUMIDITY                   = "humidity"
-    static final String ATTR_WIND_SPEED                 = "wind_speed"
-    static final String ATTR_PRESSURE                   = "pressure"
-    static final String ATTR_IS_OUTDOOR                 = "is_outdoor"
-    static final String ATTR_TIME_OF_DAY                = "time_of_day"
-    static final String ATTR_IS_COMFORTABLE             = "is_comfortable"
-    static final String ATTR_WIND_DIRECTION             = "wind_direction"
-    static final String ATTR_WIND_DIRECTION_CORRECTION  = "wind_direction_correction_applied"
+    // Sensor attributes (Hubitat camelCase)
+    static final String ATTR_COMFORT_LEVEL             = "comfortLevel"
+    static final String ATTR_COMFORT_DESCRIPTION       = "comfortDescription"
+    static final String ATTR_COMFORT_EXPLANATION       = "comfortExplanation"
+    static final String ATTR_CALCULATION_METHOD        = "calculationMethod"
+    static final String ATTR_TEMPERATURE               = "temperature"
+    static final String ATTR_HUMIDITY                  = "humidity"
+    static final String ATTR_WIND_SPEED                = "windSpeed"
+    static final String ATTR_PRESSURE                  = "pressure"
+    static final String ATTR_IS_OUTDOOR                = "isOutdoor"
+    static final String ATTR_TIME_OF_DAY               = "timeOfDay"
+    static final String ATTR_IS_COMFORTABLE            = "isComfortable"
+    static final String ATTR_WIND_DIRECTION            = "windDirection"
+    static final String ATTR_WIND_DIRECTION_CORRECTION = "windDirectionCorrection"
+
 }
 
 
