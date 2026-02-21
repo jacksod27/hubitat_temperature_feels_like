@@ -7,8 +7,6 @@
  Source:   https://github.com/smkrv/ha-weathersense
 */
 
-class WeatherSenseConst {
-
     // Domain / name
     static final String DOMAIN = "weathersense"
     static final String NAME   = "WeatherSense"
