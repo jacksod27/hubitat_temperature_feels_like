@@ -138,6 +138,10 @@ def calculateAndUpdate() {
         return
     }
 
+    if (result.outOfRange) {
+        log.warn "Feels-like value (${result.feelsLike}°C) is unusually far from actual temperature (${inputs.temperature}°C)"
+    }
+ 
  // Smoothing
     BigDecimal displayValue = convertUnit(result.feelsLike)
     if (enableSmoothing && state.smoothedValue != null) {
